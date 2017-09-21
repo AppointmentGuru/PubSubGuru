@@ -13,10 +13,10 @@ class TestPubnubBackend(unittest.TestCase):
         example_payload = {"foo": "bar"}
         self.pb.publish('example.test', example_payload)
 
-    '''
-    def test_subscribe(self):
-        pb.subscribe()
-    '''
+
+    # def test_subscribe(self):
+    #     pb.subscribe()
+
 
 if __name__ == '__main__':
     unittest.main()

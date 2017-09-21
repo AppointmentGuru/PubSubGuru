@@ -1,6 +1,5 @@
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub, SubscribeListener
-from pubnub.enums import PNStatusCategory
 
 import importlib, os
 

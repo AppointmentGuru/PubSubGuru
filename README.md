@@ -2,6 +2,8 @@
 
 Simple Publish Subscribe python library
 
+[![PyPI version](https://badge.fury.io/py/school_pubsub.svg)](https://badge.fury.io/py/school_pubsub)
+
 ### Installation
 
 ```

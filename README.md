@@ -4,6 +4,10 @@ Simple Publish Subscribe python library
 
 [![PyPI version](https://badge.fury.io/py/school_pubsub.svg)](https://badge.fury.io/py/school_pubsub)
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d52688e6b2e940689f592c15f67a8879)](https://www.codacy.com/app/toast38coza/PubSubGuru?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AppointmentGuru/PubSubGuru&amp;utm_campaign=Badge_Grade)
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/d52688e6b2e940689f592c15f67a8879)](https://www.codacy.com/app/toast38coza/PubSubGuru?utm_source=github.com&utm_medium=referral&utm_content=AppointmentGuru/PubSubGuru&utm_campaign=Badge_Coverage)
+
 ### Installation
 
 ```

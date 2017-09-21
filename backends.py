@@ -1,7 +1,15 @@
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub, SubscribeListener
-
 import importlib, os
+
+def get_secret(key, default=None):
+    '''Returns a docker secret: else environment variable'''
+    try:
+        return open('/run/secrets/{}'.format(key)).read().rstrip()
+    except IOError:
+        return os.environ.get(key)
+    return default
+
 
 class PubNubBackend:
     '''
@@ -21,8 +29,8 @@ class PubNubBackend:
 
     def __init__(self, channel):
 
-        publish_key = os.environ.get('PUBNUB_PUBLISH_KEY', None)
-        subscribe_key = os.environ.get('PUBNUB_SUBSCRIBE_KEY', None)
+        publish_key = get_secret('PUBNUB_PUBLISH_KEY', None)
+        subscribe_key = get_secret('PUBNUB_SUBSCRIBE_KEY', None)
 
         if None in [subscribe_key, publish_key]:
             msg = 'Please make sure you\'ve set environment varialbes: PUBNUB_PUBLISH_KEY and PUBNUB_SUBSCRIBE_KEY'

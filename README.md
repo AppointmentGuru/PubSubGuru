@@ -8,6 +8,15 @@ Simple Publish Subscribe python library
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/d52688e6b2e940689f592c15f67a8879)](https://www.codacy.com/app/toast38coza/PubSubGuru?utm_source=github.com&utm_medium=referral&utm_content=AppointmentGuru/PubSubGuru&utm_campaign=Badge_Coverage)
 
+
+### Demo
+
+```
+docker-compose up
+```
+
+(see `example.py`)
+
 ### Installation
 
 ```

@@ -19,7 +19,7 @@ def get_backend(module, backendClass, channel):
 def publish(backend, key, payload):
     backend.publish(key, payload)
 
-def listen(backend):
+def listen(backend, functionmapper):
     '''Process that runs forever listening on configured channel'''
-    backend.subscribe()
+    backend.subscribe(functionmapper)
 

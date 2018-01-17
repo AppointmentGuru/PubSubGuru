@@ -1,6 +1,6 @@
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub, SubscribeListener
-import importlib, os
+import importlib, os, time, redis, json
 
 def get_secret(key, default=None):
     '''Returns a docker secret: else environment variable'''
@@ -10,6 +10,52 @@ def get_secret(key, default=None):
         return os.environ.get(key)
     return default
 
+def call_mapped_method(message, functionmapper:dict):
+    '''
+    fund method discription from functionmapper[message.key]
+    and execute functionmapper[message.key](message)
+
+    Where message is a python dict
+    '''
+    message = eval(message)
+    data = data.get('data')
+    event_key = data.get('key')
+    print('key: {}'.format(event_key))
+    task_definition = functionmapper.get(event_key, None)
+
+    if task_definition is not None:
+        mod = importlib.import_module(task_definition.get('module'))
+        method = task_definition.get('method')
+        getattr(mod, method)(data)
+
+def normalize(content, as_json):
+    '''
+    Take a string, btyestring, dict or even a json object and turn it into a pydict
+    '''
+    pass
+
+class RedisBackend:
+
+    def __init__(self, channel):
+        self.channel = channel
+        self.redis = redis.StrictRedis(host='redis', port=6379, db=0)
+
+    def publish(self, key, payload):
+        data = {
+            "key": key,
+            "payload": payload
+        }
+        return self.redis.publish(self.channel, data)
+
+    def subscribe(self, functionmapper):
+        p = self.redis.pubsub()
+        p.subscribe(self.channel)
+
+        while True:
+            message = p.get_message()
+            if message:
+                call_mapped_method(message, functionmapper)
+            time.sleep(0.001)  # be nice to the system :)
 
 class PubNubBackend:
     '''
@@ -60,7 +106,7 @@ class PubNubBackend:
             .message(data)\
             .async(publish_callback)
 
-    def subscribe(self, functionmapper):
+    def listen(self, functionmapper):
         '''
         Implements a multicast pub/sub. It is the responsibility of the
         subscriber determine if it needs to perform any actions based on
@@ -95,7 +141,11 @@ class PubNubBackend:
         while True:
             result = my_listener.wait_for_message_on(self.channel)
             print(result.message)
-            task_definition = functionmapper.get(result.message.get('key'), None)
+            event_key = result.message.get('key')
+            task_definition = functionmapper.get(event_key, None)
+            print ('key: {}'.format(event_key))
+            print ('task defn: {}'.format(task_definition))
+
             if task_definition is not None:
                 mod = importlib.import_module(task_definition.get('module'))
                 method = task_definition.get('method')
